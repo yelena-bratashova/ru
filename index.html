@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elena Bratashova | Магия быть собой</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Цвета 2026: чистые, светящиеся, минималистичные */
+            --bg-color: #F8F7F5; /* Очень светлый жемчужно-бежевый фон */
+            --glass-white: rgba(255, 255, 255, 0.55); /* Полупрозрачное белое стекло */
+            --glass-border: rgba(255, 255, 255, 0.8); /* Светлая грань стекла */
+            --gold-accent: #CFA670; /* Благородный золотистый */
+            --gold-glow: rgba(207, 166, 112, 0.5); /* Золотое свечение */
+            --text-dark: #3A3530;
+            --text-light: #7A756F;
+            
+            /* Неоморфные тени */
+            --neo-shadow: 12px 12px 30px rgba(170, 175, 185, 0.3), -12px -12px 30px #FFFFFF;
+            --neo-shadow-inset: inset 4px 4px 10px rgba(170, 175, 185, 0.2), inset -4px -4px 10px #FFFFFF;
+
+            /* Анимации */
+            --smooth: all 400ms cubic-bezier(0.4, 0.0, 0.2, 1);
+            --radius-bento: 28px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Oswald', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- СЛОЖНЫЕ ПУЛЬСИРУЮЩИЕ ЭЛЕМЕНТЫ ФОНА (3D Сферы) --- */
+        .bg-elements {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ffffff 0%, rgba(255,255,255,0.2) 60%, transparent 100%);
+            box-shadow: 10px 10px 40px rgba(170,175,185,0.4), inset -10px -10px 40px rgba(0,0,0,0.05);
+            animation: floatOrb 20s infinite alternate ease-in-out;
+            filter: blur(2px);
+        }
+        .orb-1 { width: 400px; height: 400px; top: -100px; right: -100px; }
+        .orb-2 { width: 250px; height: 250px; bottom: 10%; left: -50px; animation-duration: 25s; animation-delay: -5s; }
+        .orb-3 { width: 150px; height: 150px; top: 40%; right: 15%; animation-duration: 18s; filter: blur(5px); }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-40px, 40px) scale(1.1); }
+        }
+
+        /* --- УТИЛИТЫ СТЕКЛА И НЕОМОРФИЗМА --- */
+        .glass-panel {
+            background: var(--glass-white);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-bento);
+            box-shadow: var(--neo-shadow);
+        }
+
+        .container { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+        .grid-12 { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; }
+        .section-padding { padding: 100px 0; }
+
+        /* --- ВЕРХНЕЕ ФОТО --- */
+        .top-image-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            background: var(--bg-color); /* Скрываем возможные щели */
+        }
+        .top-image-container img {
+            width: 100%;
+            max-height: 70vh;
+            object-fit: cover;
+            object-position: center 20%;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+        }
+
+        /* --- ШАПКА (ПЛАВАЮЩЕЕ МЕНЮ ИЗ РЕФЕРЕНСА 2) --- */
+        header {
+            position: sticky;
+            top: 20px;
+            z-index: 1000;
+            transition: var(--smooth);
+            margin-top: -40px; /* Наплывает на фото */
+            padding: 0 20px;
+        }
+
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            border-radius: 100px; /* Овальное как на картинке */
+            background: rgba(235, 229, 218, 0.85); /* Бежево-матовое */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: var(--neo-shadow);
+            border: 1px solid rgba(255,255,255,0.6);
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--gold-accent);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav-links { display: flex; gap: 35px; list-style: none; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            transition: var(--smooth);
+        }
+
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -4px; left: 50%; width: 0; height: 2px;
+            background: var(--gold-accent); box-shadow: 0 0 8px var(--gold-glow);
+            transition: var(--smooth); transform: translateX(-50%);
+        }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: var(--gold-accent); }
+
+        /* Бургер меню для мобильных */
+        .burger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+        .burger span { display: block; width: 25px; height: 2px; background: var(--text-dark); transition: var(--smooth); }
+        
+        /* Мобильное выпадающее меню */
+        .mobile-menu {
+            position: absolute; top: 80px; left: 20px; right: 20px;
+            background: var(--glass-white); backdrop-filter: blur(30px);
+            border-radius: 20px; border: 1px solid var(--glass-border);
+            box-shadow: var(--neo-shadow);
+            padding: 20px; display: flex; flex-direction: column; gap: 15px;
+            opacity: 0; transform: scale(0.95); pointer-events: none; transition: var(--smooth);
+            text-align: center;
+        }
+        .mobile-menu.active { opacity: 1; transform: scale(1); pointer-events: all; }
+        .mobile-menu a { text-decoration: none; color: var(--text-dark); font-size: 1.2rem; text-transform: uppercase; }
+
+        /* --- HERO TEXT --- */
+        .hero { padding-top: 80px; text-align: center; }
+        .hero h1 { font-size: 3.5rem; color: var(--gold-accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; font-weight: 400; }
+        .hero p { font-size: 1.3rem; color: var(--text-dark); max-width: 800px; margin: 0 auto; font-weight: 300; }
+
+        /* --- BENTO СЕТКА (ОБО МНЕ) --- */
+        .bento-card { padding: 40px; transition: var(--smooth); display: flex; flex-direction: column; justify-content: center; }
+        .about-main { grid-column: span 8; font-size: 1.2rem; font-weight: 300; }
+        .about-philosophy { grid-column: span 4; font-size: 1.5rem; color: var(--gold-accent); font-weight: 300; text-align: center; background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.3)); }
+        
+        .skills-grid { grid-column: span 12; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 10px; }
+        .skill-item { padding: 20px; text-align: center; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- КАРТОЧКИ ПРОДУКТОВ (СЛОЖНЫЙ ХОВЕР) --- */
+        .section-title { text-align: center; font-size: 3rem; margin-bottom: 50px; color: var(--gold-accent); text-transform: uppercase; font-weight: 400;}
+        
+        .product-card {
+            grid-column: span 4;
+            padding: 40px;
+            position: relative;
+            z-index: 1;
+            transition: var(--smooth);
+            display: flex; flex-direction: column; justify-content: space-between; min-height: 380px;
+        }
+        
+        /* Градиентная светящаяся рамка под стеклом (псевдоэлемент) */
+        .product-card::before {
+            content: ''; position: absolute; inset: -2px; border-radius: calc(var(--radius-bento) + 2px);
+            background: linear-gradient(135deg, var(--gold-accent), transparent, var(--gold-accent));
+            z-index: -1; opacity: 0; transition: var(--smooth);
+        }
+
+        .product-card h3 { font-size: 1.6rem; color: var(--gold-accent); margin-bottom: 15px; text-transform: uppercase; font-weight: 500;}
+        .product-card p { font-size: 1.1rem; font-weight: 300; color: var(--text-dark); flex-grow: 1;}
+
+        .btn-glass {
+            padding: 12px 30px; border: 1px solid var(--gold-accent); border-radius: 40px;
+            background: rgba(255,255,255,0.2); color: var(--gold-accent); font-family: 'Oswald', sans-serif;
+            font-size: 1rem; text-transform: uppercase; cursor: pointer; transition: var(--smooth);
+            align-self: flex-start; margin-top: 20px; backdrop-filter: blur(10px);
+        }
+
+        /* Эффекты наведения на карточку продукта */
+        .product-card:hover { transform: translateY(-10px) scale(1.03); box-shadow: 0 20px 40px rgba(170,175,185,0.4), 0 0 30px var(--gold-glow); }
+        .product-card:hover::before { opacity: 1; }
+        .product-card:hover .btn-glass { background: var(--gold-accent); color: #fff; box-shadow: 0 5px 15px var(--gold-glow); }
+
+        /* --- ТРЕНИНГ --- */
+        .training-section {
+            padding: 60px; text-align: center; margin-bottom: 80px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.4));
+        }
+        .training-section h2 { font-size: 2.5rem; color: var(--gold-accent); text-transform: uppercase; margin-bottom: 20px; font-weight: 400;}
+
+        /* --- ФУТЕР --- */
+        footer { padding: 40px 20px; margin-top: 50px; }
+        .footer-panel {
+            max-width: 1200px; margin: 0 auto; padding: 30px 40px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .socials { display: flex; gap: 20px; }
+        .socials a {
+            color: var(--text-dark); text-decoration: none; font-size: 1.2rem;
+            transition: var(--smooth); text-transform: uppercase;
+        }
+        .socials a:hover { color: var(--gold-accent); text-shadow: 0 0 10px var(--gold-glow); }
+
+        /* --- МОДАЛЬНОЕ ОКНО --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 10, 10, 0.4); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            z-index: 2000; display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 500ms ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        
+        .modal-content {
+            width: 90%; max-width: 600px; padding: 50px; position: relative;
+            transform: translateY(50px) scale(0.95); transition: var(--smooth);
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
+        
+        .modal-close {
+            position: absolute; top: 20px; right: 25px; font-size: 2rem;
+            color: var(--text-dark); cursor: pointer; transition: var(--smooth);
+        }
+        .modal-close:hover { color: var(--gold-accent); transform: rotate(90deg); }
+
+        /* --- АНИМАЦИИ СВЕТА И ПОЯВЛЕНИЯ --- */
+        .fade-up { opacity: 0; transform: translateY(40px); transition: var(--smooth); }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        /* --- МОБИЛЬНАЯ ВЕРСИЯ --- */
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .burger { display: flex; }
+            .grid-12 { display: flex; flex-direction: column; }
+            .hero h1 { font-size: 2.5rem; }
+            .nav-container { border-radius: 20px; padding: 15px 25px; }
+            
+            /* Горизонтальный scroll-витрина для продуктов */
+            .products-wrapper {
+                display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+                gap: 20px; padding: 20px 0 40px 0;
+                /* Скрываем скроллбар */
+                scrollbar-width: none; 
+            }
+            .products-wrapper::-webkit-scrollbar { display: none; }
+            .product-card { flex: 0 0 85%; scroll-snap-align: center; min-height: 320px; }
+            
+            .footer-panel { flex-direction: column; gap: 20px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-elements">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="top-image-container">
+        <img src="https://images.fillout.com/orgid-455362/flowpublicid-3f7NzbG1X3us/widgetid-ioav/7kQkhxzAA7wgrRjU318Tei/IMG_1550.png?a=a8DBiypLEpM74PabG1s1c6" alt="Elena Bratashova">
+    </div>
+
+    <header id="header">
+        <nav class="nav-container">
+            <a href="#" class="logo">Elena Bratashova | Трансформация</a>
+            <ul class="nav-links">
+                <li><a href="#about">Обо мне</a></li>
+                <li><a href="#mission">Миссия</a></li>
+                <li><a href="#products">Продукты</a></li>
+                <li><a href="#training">Тренинг</a></li>
+            </ul>
+            <div class="burger" id="burger">
+                <span></span><span></span><span></span>
+            </div>
+        </nav>
+        
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="#about" class="menu-link">Обо мне</a>
+            <a href="#mission" class="menu-link">Моя миссия</a>
+            <a href="#products" class="menu-link">Мои продукты</a>
+            <a href="#training" class="menu-link">Тренинг</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero container fade-up">
+            <h1>Давай знакомиться!</h1>
+            <p>Меня зовут Елена Браташова, мне 40 лет. За последние 7 лет я прошла глубокую трансформацию — от потери себя, депрессий и «дня сурка» до осознанного выбора жить иначе.</p>
+        </section>
+
+        <section id="about" class="section-padding container">
+            <div class="grid-12">
+                <div class="bento-card glass-panel about-main fade-up">
+                    <p>Этот путь включал личные изменения, практики, тренинги, книги, обучения, курсы и опыт. Всё, чем я делюсь сегодня, я пропустила через своё тело и свой личный опыт. Это не просто знания — это прожитая жизнь и внутренняя сила. Только в честности с собой рождается магия.</p>
+                </div>
+                <div class="bento-card glass-panel about-philosophy fade-up">
+                    <p>«Мастер — это тот, кто сам прошёл через тьму и боль…»</p>
+                </div>
+                <div class="skills-grid fade-up">
+                    <div class="skill-item glass-panel">Психолог</div>
+                    <div class="skill-item glass-panel">Инструктор йоги</div>
+                    <div class="skill-item glass-panel">Мастер гвоздестояния</div>
+                    <div class="skill-item glass-panel">Телесные практики</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="products" class="section-padding container">
+            <h2 class="section-title fade-up">Мои продукты</h2>
+            <div class="grid-12 products-wrapper">
+                <div class="product-card glass-panel fade-up">
+                    <h3>Мероприятия</h3>
+                    <p>Организация глубоких трансформационных пространств и ретритов.</p>
+                    <button class="btn-glass open-modal" data-title="Организация мероприятий" data-desc="Полное описание услуг по созданию безопасного пространства для трансформации.">Подробнее</button>
+                </div>
+                <div class="product-card glass-panel fade-up" style="transition-delay: 100ms;">
+                    <h3>Гвоздестояние</h3>
+                    <p>Глубокая работа с телом, страхами и внутренним намерением.</p>
+                    <button class="btn-glass open-modal" data-title="Практика на гвоздях" data-desc="Индивидуальная и групповая работа через практику стояния на гвоздях Садху.">Подробнее</button>
+                </div>
+                <div class="product-card glass-panel fade-up" style="transition-delay: 200ms;">
+                    <h3>Йога-практики</h3>
+                    <p>Возвращение гибкости телу и уму через осознанное движение и дыхание.</p>
+                    <button class="btn-glass open-modal" data-title="Йога-практики" data-desc="Мягкие и силовые классы йоги для любого уровня подготовки.">Подробнее</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="training" class="container fade-up">
+            <div class="training-section glass-panel">
+                <h2>Авторский тренинг «Магия быть собой»</h2>
+                <p style="font-size: 1.2rem; font-weight: 300; max-width: 800px; margin: 0 auto 30px;">2,5 дня полного погружения в пространство женской силы, честности и любви к себе (в коллаборации с Елизаветой Дигинау).</p>
+                <button class="btn-glass" style="background: var(--gold-accent); color: white;">Забронировать участие</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-panel glass-panel">
+            <div class="logo">Elena Bratashova</div>
+            <div class="socials">
+                <a href="#">Instagram</a>
+                <a href="#">Telegram</a>
+                <a href="#">WhatsApp</a>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content glass-panel">
+            <div class="modal-close" id="modal-close">&times;</div>
+            <h2 id="modal-title" style="color: var(--gold-accent); margin-bottom: 20px; font-size: 2rem; text-transform: uppercase;">Название</h2>
+            <p id="modal-desc" style="font-size: 1.2rem; font-weight: 300;">Описание продукта появится здесь.</p>
+            <button class="btn-glass" style="margin-top: 30px; width: 100%;">Записаться</button>
+        </div>
+    </div>
+
+    <script>
+        // Анимация при скролле (Fade Up)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // Бургер меню
+        const burger = document.getElementById('burger');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuLinks = document.querySelectorAll('.menu-link');
+
+        function toggleMenu() {
+            mobileMenu.classList.toggle('active');
+        }
+
+        burger.addEventListener('click', toggleMenu);
+        menuLinks.forEach(link => link.addEventListener('click', () => mobileMenu.classList.remove('active')));
+
+        // Модальное окно
+        const modal = document.getElementById('modal');
+        const modalClose = document.getElementById('modal-close');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-desc');
+        const openBtns = document.querySelectorAll('.open-modal');
+
+        openBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                modalTitle.textContent = btn.getAttribute('data-title');
+                modalDesc.textContent = btn.getAttribute('data-desc');
+                modal.classList.add('active');
+            });
+        });
+
+        modalClose.addEventListener('click', () => modal.classList.remove('active'));
+        
+        // Закрытие по клику вне окна
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
